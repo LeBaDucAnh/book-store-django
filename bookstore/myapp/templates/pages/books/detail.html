@@ -1,0 +1,63 @@
+{% extends "pages/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Thông tin chi tiết sách</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#"></a></li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <section class="content">
+        <div class="container">
+            {% if data %}
+          <table class="table table-bordered mt-3 .bg-light" id="myTable">
+            <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Hình ảnh</th>
+                  <th>Tên sách</th>
+                    <th>Số lượng</th>
+                    <th>Giá tiền</th>
+                    <th>Tác giả</th>
+                    <th>Thể loại</th>
+                    <th>Năm xuất bản</th>
+                    <th>Nhà xuất bản</th>
+                    <th>Mô tả</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{data.id}}</td>
+                <td><img src="{{data.image}}" alt="" width="50px"></td>
+                <td>{{data.book_name}}</td>
+                <td>{{data.total_qty}}</td>
+                <td>{{data.unit_price}}</td>
+                <td>{{data.author}}</td>
+                <td>{{data.category}}</td>
+                <td>{{data.published_year}}</td>
+                <td>{{data.publisher}}</td>
+                <td>{{data.description}}</td>
+            </tr>
+            </tbody>
+        </table>
+            {% else %}
+                <h4 class="text-center alert alert-warning">Không có dữ liệu</h4>
+            {% endif %}
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock content %}

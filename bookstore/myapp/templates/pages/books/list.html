@@ -1,0 +1,184 @@
+{% extends "pages/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Quản lý thông tin sách</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#"></a></li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <section class="content">
+        <div class="container">
+        <div class="buttons">
+<!--                <a href="{% url 'them' %}" ><button class="btn-primary">Thêm thể loại mới</button></a>-->
+            <form action="" method="GET" class="form">
+                {{myFilter.form}}
+                <input type="submit" value="Search" class="btn btn-primary btn-sm">
+            </form>
+        </div>
+            {% if contacts %}
+          <table class="table table-bordered mt-3 .bg-light" id="myTable">
+            <thead>
+                <tr>
+                  <th style="width:5%" onclick="sortTable(0)">ID</th>
+                  <th onclick="sortTable(1)">Hình ảnh</th>
+                  <th onclick="sortTable(2)">Tên sách</th>
+                    <th>Số lượng</th>
+                    <th>Giá tiền</th>
+                    <th>Tác giả</th>
+                    <th>Thể loại</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for bk in contacts %}
+            <tr>
+                <td>{{bk.id}}</td>
+                <td><img src="{{bk.image}}" alt="" width="100px"></td>
+                <td>{{bk.book_name}}</td>
+                <td>{{bk.total_qty}}</td>
+                <td>{{bk.unit_price}}</td>
+                <td>{{bk.author}}</td>
+                <td>{{bk.category}}</td>
+                <td width="15%;">
+                    <a href="{% url 'update_book' bk.id %}" class="btn btn-primary" ><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    <form action="{% url 'delete_book' bk.id %}" method="POST" class="d-inline" onsubmit="return confirm('Bạn có muốn xóa mục này?')">
+                        {% csrf_token %}
+                          <button type="submit" class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                      </form>
+                    <a href="{% url 'detail' bk.id %}" class="btn btn-info" ><i class="fa fa-eye" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+            {% else %}
+                <h4 class="text-center alert alert-warning">Không có dữ liệu</h4>
+            {% endif %}
+      <div class="pagination">
+            <span class="step-links">
+                {% if contacts.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ contacts.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ contacts.number }} of {{ contacts.paginator.num_pages }}.
+                </span>
+
+                {% if contacts.has_next %}
+                    <a href="?page={{ contacts.next_page_number }}">next</a>
+                    <a href="?page={{ contacts.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+       </div>
+
+
+        </div>
+
+    </section>
+
+</div>
+<script>
+    function sortTable(n) {
+      var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+      table = document.getElementById("myTable");
+      switching = true;
+      //Set the sorting direction to ascending:
+      dir = "asc";
+      /*Make a loop that will continue until
+      no switching has been done:*/
+      while (switching) {
+        //start by saying: no switching is done:
+        switching = false;
+        rows = table.rows;
+        /*Loop through all table rows (except the
+        first, which contains table headers):*/
+        for (i = 1; i < (rows.length - 1); i++) {
+          //start by saying there should be no switching:
+          shouldSwitch = false;
+          /*Get the two elements you want to compare,
+          one from current row and one from the next:*/
+          x = rows[i].getElementsByTagName("TD")[n];
+          y = rows[i + 1].getElementsByTagName("TD")[n];
+          /*check if the two rows should switch place,
+          based on the direction, asc or desc:*/
+          if (dir == "asc") {
+            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+              //if so, mark as a switch and break the loop:
+              shouldSwitch= true;
+              break;
+            }
+          } else if (dir == "desc") {
+            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+              //if so, mark as a switch and break the loop:
+              shouldSwitch = true;
+              break;
+            }
+          }
+        }
+        if (shouldSwitch) {
+          /*If a switch has been marked, make the switch
+          and mark that a switch has been done:*/
+          rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+          switching = true;
+          //Each time a switch is done, increase this count by 1:
+          switchcount ++;
+        } else {
+          /*If no switching has been done AND the direction is "asc",
+          set the direction to "desc" and run the while loop again.*/
+          if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+          }
+        }
+      }
+    }
+
+
+ function sortNumber(){
+        var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("myTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      //check if the two rows should switch place:
+      if (Number(x.innerHTML) > Number(y.innerHTML)) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+
+</script>
+{% endblock content %}

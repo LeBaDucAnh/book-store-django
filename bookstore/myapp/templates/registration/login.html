@@ -1,0 +1,87 @@
+{% extends 'registration/base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+  <div class="login-box">
+  <!-- /.login-logo -->
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="#" class="h1"><b>KingEdu</b>Store</a>
+    </div>
+    <div class="card-body">
+      <p class="login-box-msg">Đăng nhập hệ thống quản lý</p>
+
+      <form action="" method="post">
+        {% csrf_token %}
+        {% for key, value in form.errors.items %}
+                {{value}}
+         {% endfor %}
+        <div class="input-group mb-3">
+          <input type="text" name="username"  class="form-control" placeholder="Tài khoản">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+          <span class="invalid-feedback"></span>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" name="password" class="form-control" placeholder="Mật khẩu">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+          <span class="invalid-feedback"></span>
+        </div>
+        <div class="row">
+          <div class="col-6 mt-2">
+            <div class="icheck-primary">
+              <input type="checkbox" id="remember">
+              <label for="remember">
+                Nhớ tài khoản
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-6 mt-2">
+            <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+          </div>
+          <!-- /.col -->
+        </div>
+        <div class="row">
+        <div class="col-6 mt-2">
+
+        <a href="{% url 'signup' %}">Đăng ký</a>
+          </div>
+        </div>
+      </form>
+
+
+      <!--p class="mb-1 mt-5">
+        <a href="forgot_password.php">Quên mật khẩu</a>
+      </p>
+      <p class="mb-0">
+        <a href="register.php" class="text-center">Đăng kí tài khoản</a>
+      </p>
+    </div-->
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+
+
+<!--  <h2>Log In</h2>-->
+<!--  -->
+<!--  <form method="post" class="form-control">-->
+<!--    {% csrf_token %}-->
+<!--    {% for key, value in form.errors.items %}-->
+<!--            {{value}}-->
+<!--    {% endfor %}-->
+
+<!--    <button type="submit">Log In</button>-->
+<!--  </form>-->
+{% endblock %}

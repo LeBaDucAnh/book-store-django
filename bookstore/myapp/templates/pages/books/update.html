@@ -1,0 +1,33 @@
+{% extends 'pages/base.html' %}
+{% block content %}
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+
+            <h1 class="m-0">Chỉnh sửa thông tin sách</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#"></a></li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <section class="content">
+        <div class="container col-sm-8 offset-2">
+		    <form method="POST" class="form mt-3" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form.as_p}}
+               <input type="submit" class="btn btn-success" value="Update">
+                <a href="{% url 'list_book' %}" class="btn btn-info">Back</a>
+			</form>
+		</div>
+	</section>
+</div>
+
+{% endblock content %}
