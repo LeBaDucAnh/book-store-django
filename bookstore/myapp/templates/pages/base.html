@@ -34,7 +34,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index.php" class="nav-link">Trang chủ</a>
+        <a href="{% url 'home'%}" class="nav-link">Trang chủ</a>
       </li>
 
       <li class="nav-item d-none d-sm-inline-block">
@@ -50,7 +50,7 @@
         </a>
       </li>
       <li class="nav-item dropdown no-arrow">
-          <a class="nav-link" href="profile.php">
+          <a class="nav-link" href="{% url 'users-profile' %}">
                 <i class="fas fa-user"></i><span class="text-secondary"> Thông tin cá nhân</span>
           </a>
         </li>
@@ -66,7 +66,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index.php" class="brand-link bg-light" >
+    <a href="{% url 'home'%}" class="brand-link bg-light" >
       <img src="{% static 'images/book/logo.png' %}" alt="Logo" class="brand-image" style="opacity: .8; width: 20%;">
       <b>KingEdu</b>
       <br>
@@ -77,10 +77,10 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{% static 'images/author/imag-03.jpg' %}" class="img-square rounded elevation-3" alt="User Image">
+          <img src="{{ user.profile.avatar.url }}" class="img-square rounded elevation-3" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{user.username}}</a>
+          <a href="{% url 'users-profile' %}" class="d-block">{{user.username}}</a>
         </div>
       </div>
 
@@ -171,21 +171,21 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-user"></i>
               <p>
-                Người dùng
+                Khách hàng
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="add_user.php" class="nav-link">
+                <a href="{% url 'add_customer' %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm người dùng</p>
+                  <p>Thêm khách hàng</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="manage_user.php" class="nav-link">
+                <a href="{% url 'list_customer' %}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Quản lý người dùng</p>
+                  <p>Quản lý khách hàng</p>
                 </a>
               </li>
             </ul>

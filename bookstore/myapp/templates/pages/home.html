@@ -1,5 +1,5 @@
 {% extends "pages/base.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}KingEdu{% endblock %}
 {% block content %}
     {% if user.is_authenticated %}
 <div class="content-wrapper">
@@ -49,7 +49,7 @@
               <div class="icon">
                 <i class="fas fa-book"></i>
               </div>
-              <a href="manage_book.php" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'list_book' %}" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->
@@ -79,7 +79,7 @@
               <div class="icon">
                 <i class="ion ion-person-stalker"></i>
               </div>
-              <a href="manage_author.php" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="{% url 'list' %}" class="small-box-footer">Chi tiết <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
           <!-- ./col -->

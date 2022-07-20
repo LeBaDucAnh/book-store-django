@@ -21,9 +21,18 @@
         <div class="container">
         <div class="buttons">
 <!--                <a href="{% url 'them' %}" ><button class="btn-primary">Thêm thể loại mới</button></a>-->
-            <form action="" method="GET" class="form">
-                {{myFilter.form}}
-                <input type="submit" value="Search" class="btn btn-primary btn-sm">
+            <form action="{% url 'search' %}" method="POST" class="form" style="width:50%;">
+                {% csrf_token %}
+                <div class="input-group w-100">
+                            <input type="text" class="form-control" style="width:60%;" placeholder="Search" name="q"">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+<!--                {{myFilter.form}}-->
+<!--                <input type="submit" value="Search" class="btn btn-primary btn-sm">-->
             </form>
         </div>
             {% if contacts %}

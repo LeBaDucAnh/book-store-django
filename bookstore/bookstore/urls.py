@@ -18,6 +18,9 @@ from django.urls import path, include
 from rest_framework_simplejwt import views as jwt_views
 from django.views.generic.base import TemplateView
 from myapp import views
+from django.conf import settings
+from django.conf.urls.static import static
+from myapp.views import ChangePasswordView
 
 urlpatterns = [
     path('api/token', jwt_views.TokenObtainPairView.as_view()),
@@ -28,6 +31,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('myapp.urls'), name='api'),
     path('index/', TemplateView.as_view(template_name='pages/home.html'), name='index'),
+    path('users/', views.homePage, name='index/users'),
+    path('users/', views.basePgae),
     path('category',views.show, name="add"),
     path('<int:id>/', views.update_data, name = "update"),
     path('delete/<int:id>', views.delete_data, name = 'delete'),
@@ -38,7 +43,14 @@ urlpatterns = [
     path('delete-author/<int:id>', views.delete_author, name = 'delete-author'),
     path('add-book', views.add_book, name = 'add_book'),
     path('book', views.show_book, name='list_book'),
+    path('search/', views.search, name='search'),
     path('update-book/<int:id>/', views.update_book, name = 'update_book'),
     path('delete-book/<int:id>', views.delete_book, name = 'delete_book'),
     path('detail-book/<int:id>', views.get_book_by_id, name = 'detail'),
-]
+    path('add-customer',views.add_customer, name = 'add_customer'),
+    path('customer', views.show_customer, name='list_customer'),
+    path('update-customer/<int:id>/', views.update_customer, name = 'update-customer'),
+    path('delete-customer/<int:id>', views.delete_author, name = 'delete-customer'),
+    path('profile/', views.profile, name='users-profile'),
+    path('password-change/', ChangePasswordView.as_view(), name='password_change'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from datetime import datetime
@@ -8,7 +8,7 @@ from rest_framework.serializers import ModelSerializer, CharField
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework import authentication, permissions
-from .form import SignUpForm
+from .form import *
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, HttpResponseRedirect
 from django.contrib import messages
@@ -17,8 +17,10 @@ from django.contrib.auth import authenticate, login, logout
 from django import forms
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .filter import *
-
-
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 # Create your views here.
 
 def index(request):
@@ -37,6 +39,10 @@ class HelloView(APIView):
     def get (request):
         return Response({"message": "Hello"})
 
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'registration/change_password.html'
+    success_message = "Successfully Changed Your Password"
+    success_url = reverse_lazy('users-home')
 
 class CategorySerializer(forms.ModelForm):
     class Meta:
@@ -74,6 +80,22 @@ class AuthorSerializer(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'author_name': forms.TextInput(attrs={'class': 'form-control'}),
+            # 'author_image': forms.ImageField()
+        }
+
+class CustomerSerializer(forms.ModelForm):
+    class Meta:
+        paginate_by = 2
+        model = Customer
+        fields = '__all__'
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'password': forms.TextInput(attrs={'class': 'form-control'}),
+            'fullname': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+
             # 'author_image': forms.ImageField()
         }
 
@@ -334,6 +356,24 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect('/login/')
 
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile is updated successfully')
+            return redirect(to='users-profile')
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    return render(request, 'registration/profile.html', {'user_form':user_form, 'profile_form':profile_form})
+
+
 
 def add_cat(request):
     if request.method == 'POST':
@@ -510,3 +550,111 @@ def get_book_by_id(request, id):
     book = Book.objects.get(pk=id)
     data = BookSerializer(book).data
     return render(request, 'pages/books/detail.html', {'data':data})
+
+
+def search(request):
+    if request.method == "POST":
+        q = request.POST['q']
+        books = Book.objects.filter(Q(book_name__icontains=q)|Q(unit_price__icontains = q)|Q(code__icontains = q))
+        return render(request, 'pages/books/search.html', {'q':q, 'books':books})
+    else:
+        return render(request, 'pages/books/search.html', {})
+
+
+# customers
+
+
+def add_customer(request):
+    if request.method == 'POST':
+        fm = CustomerSerializer(request.POST, request.FILES)
+        if fm.is_valid():
+            user = fm.cleaned_data['username']
+            passw = fm.cleaned_data['password']
+            fname = fm.cleaned_data['fullname']
+            phone = fm.cleaned_data['phone']
+            mail = fm.cleaned_data['email']
+            address = fm.cleaned_data['address']
+
+            reg = Customer(username=user, password=passw, fullname=fname, phone=phone, email=mail, address=address)
+            reg.save()
+            fm = CustomerSerializer()
+            return HttpResponseRedirect('/customer')
+    else:
+        fm = CustomerSerializer()
+    return render(request, 'pages/customers/add.html', {'form': fm})
+
+
+def show_customer(request):
+    contact_list = Customer.objects.all()
+    myFilter = CustomerFilter(request.GET, queryset=contact_list)
+    contact_list = myFilter.qs
+    paginator = Paginator(contact_list, 10)  # Show 25 contacts mỗi page
+
+    page_number = request.GET.get("page")
+    try:
+        contacts = paginator.get_page(page_number)
+    except PageNotAnInteger:
+        contacts = paginator.page(1)
+    except EmptyPage:
+        contacts = paginator.page(paginator.num_pages)
+    return render(request, 'pages/customers/list.html', {'contacts': contacts, 'myFilter': myFilter})
+
+
+# edit and update function
+def update_customer(request, id):
+    if request.method == 'POST':
+        pi = Customer.objects.get(pk=id)
+        fm = CustomerSerializer(request.POST, request.FILES, instance=pi)
+        if fm.is_valid():
+            fm.save()
+            return HttpResponseRedirect('/customer')
+    else:
+        pi = Customer.objects.get(pk=id)
+        fm = CustomerSerializer(instance=pi)
+    return render(request, 'pages/customers/update.html', {'form': fm})
+
+
+# delete function
+def delete_customer(request, id):
+    if request.method == 'POST':
+        pi = Customer.objects.get(pk=id)
+        pi.delete()
+        return HttpResponseRedirect('/customer')
+
+def login(request):
+    if request.method == "GET":
+        return render(request, 'store/login.html')
+    else:
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        customer = Customer.get_customer_by_email(email)
+        error_msg = None
+        if customer:
+            flag = check_password(password, customer.password)
+            if flag:
+                request.session['customer_id'] = customer.id
+                request.session['email'] = customer.email
+                return redirect("home")
+            else:
+                error_msg = "Email or Password is incorrect."
+        else:
+            error_msg = "Email or Password is incorrect."
+        return render(request, 'store/login.html', {'error_msg': error_msg})
+
+def homePage(request):
+    books = Book.objects.all()
+    categories = Category.objects.all()
+    context = {'books': books, 'categories': categories}
+    return render(request, 'users/home.html', context)
+
+def basePgae(request):
+    books = Book.objects.all()
+    categories = Category.objects.all()
+    context = {'books': books, 'categories': categories}
+    return render(request, 'users/base.html', context)
+
+def add_to_cart(request):
+
+
+
+    return render(request, 'users/home.html', {'contact_list': contact_list})

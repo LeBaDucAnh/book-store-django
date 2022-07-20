@@ -1,28 +1,36 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-class Employees(models.Model):
+class Customer(models.Model):
     username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
     fullname = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.CharField(max_length=50)
+    address = models.CharField(max_length=200)
 
     def __str__(self):
         return self.fullname
 
+    def get_customer_by_email(email):
+        try:
+            return Customer.objects.get(email=email)
+        except:
+            return False
 
-# class User(models.Model):
-#     username = models.CharField(max_length=100, unique=True)
-#     password = models.CharField(max_length=100)
-#     fullname = models.CharField(max_length=100)
-#     phone = models.CharField(max_length=15)
-#     email = models.CharField(max_length=50)
-#     birthday = models.DateField()
-#     address = models.CharField(max_length=100)
-#
-#     def __str__(self):
-#         return self.fullname
+    def does_exits(self):
+        return Customer.objects.filter(email=self.email)
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
+    bio = models.TextField()
+
+    def __str__(self):
+        return self.user.username
 
 
 class Author(models.Model):
@@ -62,7 +70,7 @@ class Order(models.Model):
         DELIVERED = 1
         CANCELED = 2
 
-    #customer = models.ForeignKey(User, on_delete=models.PROTECT)
+    customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
     book = models.ForeignKey(Book, on_delete=models.PROTECT)
     qty = models.IntegerField()
     price_unit = models.IntegerField()

@@ -20,6 +20,9 @@
     </div>
     <section class="content">
         <div class="container col-sm-8 offset-2">
+            <div class="row my-3 p-3">
+                <img class="rounded-circle account-img" src="{{ bk.image.url }} " style="cursor: pointer;"/>
+            </div>
 		    <form method="POST" class="form mt-3" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{form.as_p}}

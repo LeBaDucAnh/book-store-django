@@ -18,38 +18,54 @@
       </div><!-- /.container-fluid -->
     </div>
     <section class="content">
-        <div class="container">
+        <div class="container row">
             {% if data %}
-          <table class="table table-bordered mt-3 .bg-light" id="myTable">
-            <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Hình ảnh</th>
-                  <th>Tên sách</th>
-                    <th>Số lượng</th>
-                    <th>Giá tiền</th>
-                    <th>Tác giả</th>
-                    <th>Thể loại</th>
-                    <th>Năm xuất bản</th>
-                    <th>Nhà xuất bản</th>
-                    <th>Mô tả</th>
-                </tr>
-            </thead>
-            <tbody>
+            <div class="col-3 my-3 p-3">
+<!--                <img class="rounded-circle account-img" src="{{ data.image }}"/>-->
+                <img src="../{{ data.image}}" width="250px" alt="">
+            </div>
+            <div class="col-9">
+                <table class="table table-bordered mt-3 .bg-light" id="myTable">
             <tr>
+                <th>Mã sách</th>
                 <td>{{data.id}}</td>
-                <td><img src="{{data.image}}" alt="" width="50px"></td>
+            </tr>
+            <tr>
+                <th>Tên sách</th>
                 <td>{{data.book_name}}</td>
+            </tr>
+            <tr>
+                <th>Số lượng</th>
                 <td>{{data.total_qty}}</td>
+            </tr>
+            <tr>
+                <th>Giá tiền</th>
                 <td>{{data.unit_price}}</td>
+            </tr>
+            <tr>
+                <th>Tác giả</th>
                 <td>{{data.author}}</td>
+            </tr>
+            <tr>
+                <th>Thể loại</th>
                 <td>{{data.category}}</td>
+            </tr>
+            <tr>
+                <th>Năm xuất bản</th>
                 <td>{{data.published_year}}</td>
+            </tr>
+            <tr>
+                <th>Nhà xuất bản</th>
                 <td>{{data.publisher}}</td>
+            </tr>
+            <tr>
+                <th>Mô tả</th>
                 <td>{{data.description}}</td>
             </tr>
             </tbody>
         </table>
+            </div>
+
             {% else %}
                 <h4 class="text-center alert alert-warning">Không có dữ liệu</h4>
             {% endif %}

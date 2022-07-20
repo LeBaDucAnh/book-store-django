@@ -1,12 +1,15 @@
 import django_filters
 from django_filters import CharFilter
 from .models import *
-
+from django import forms
 class CategoryFilter(django_filters.FilterSet):
     category_name = CharFilter(field_name="category_name", lookup_expr='icontains')
     class Meta:
         model = Category
         fields = ['category_name']
+        widgets = {
+            'category_name': forms.TextInput(attrs={'title':'abc'})
+        }
 
 
 class AuthorFilter(django_filters.FilterSet):
@@ -25,3 +28,10 @@ class BookFilter(django_filters.FilterSet):
     class Meta:
         model = Book
         fields = ['book_name']
+
+
+class CustomerFilter(django_filters.FilterSet):
+    fullname = CharFilter(field_name="fullname", lookup_expr='icontains')
+    class Meta:
+        model = Customer
+        fields = ['fullname']

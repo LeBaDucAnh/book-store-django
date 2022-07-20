@@ -1,0 +1,245 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}KingEdu{% endblock %}
+{% block content %}
+
+
+
+<div class="tg-home tg-homeone">
+	<div id="tg-wrapper" class="tg-wrapper tg-haslayout">
+		<!--************************************
+				Inner Banner Start
+		*************************************-->
+<!--		<div class="tg-innerbanner tg-haslayout tg-parallax tg-bginnerbanner" data-z-index="-100" data-appear-top-offset="600" data-parallax="scroll" data-image-src="{%  static 'users/images/parallax/thuvien02.jpg' %}">-->
+<!--		</div>-->
+		<!--************************************
+				Inner Banner End
+		*************************************-->
+
+		<!--************************************
+					Best Selling Start
+			*************************************-->
+		<section class="tg-sectionspace tg-haslayout">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div class="tg-sectionhead">
+							<h2>Sách Nổi bật</h2>
+							<a class="tg-btn" href="products.php">Xem tất cả</a>
+						</div>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<div id="tg-bestsellingbooksslider" class="tg-bestsellingbooksslider tg-bestsellingbooks owl-carousel">
+								{% for book in books %}
+								<div class="item">
+
+									<form action="" method="">
+										<div class="tg-postbook">
+											<figure class="tg-featureimg">
+												<div class="tg-bookimg">
+													<div class="tg-frontcover"><img src="../{{book.image}}" alt="image description" style="height: 200px;"></div>
+													<div class="tg-backcover"><img src="../{{book.image}}" alt="image description" style="height: 200px;"></div>
+												</div>
+
+											</figure>
+											<div class="tg-postbookcontent" >
+												<ul class="tg-bookscategories">
+													<li><a href="javascript:void(0);">{{book.category}}</a></li>
+												</ul>
+												<div class="tg-booktitle">
+													<h3><a href="">{{book.book_name}}</a></h3>
+												</div>
+												<span class="tg-bookwriter">Tác giả : <a href="javascript:void(0);">{{book.author}}</a></span>
+												<span class="tg-bookwriter">Tiền cọc :  {{book.unit_price}} VNĐ</span>
+												<span class="tg-stars"><span></span></span>
+
+												<a class="tg-btn tg-btnstyletwo" href="javascript:void(0);">
+													<button type="submit" class="themgiosach" name="themgiosach"><i class="fa fa-shopping-basket"></i>
+														<em>Thêm vào giỏ</em></button>
+												</a>
+											</div>
+										</div>
+
+								</form>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+	</section>
+	<!--************************************
+					Best Selling End
+			*************************************-->
+	<!--************************************
+					Featured Item Start
+			*************************************-->
+	<section class="tg-bglight tg-haslayout">
+		<div class="container">
+			<div class="row">
+				<div class="tg-featureditm">
+					<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 hidden-sm hidden-xs">
+						<figure><img src="{% static 'users/images/img-02.png' %}" alt="image description"></figure>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+						<div class="tg-featureditmcontent">
+							<div class="tg-booktitle">
+								<h3><a href="javascript:void(0);">Hạt giống tâm hồn</a></h3>
+							</div>
+							<span class="tg-bookwriter">Tác giả : <a href="javascript:void(0);">Nhiều Tác Giả</a></span>
+							<span class="tg-stars"><span></span></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</section>
+	<!--************************************
+					Featured Item End
+			*************************************-->
+
+	<section class="tg-sectionspace tg-haslayout">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="tg-sectionhead">
+						<h2><span>Một số cuốn sách hay</span>Bạn đọc săn đón</h2>
+					</div>
+				</div>
+				<div id="tg-pickedbyauthorslider" class="tg-pickedbyauthor tg-pickedbyauthorslider owl-carousel">
+
+						<div class="item">
+							<div class="tg-postbook">
+								<figure class="tg-featureimg">
+									<div class="tg-bookimg">
+										<div class="tg-frontcover"><img src="{% static 'users/images/books/img-01.jpg' %}" alt="image description"></div>
+									</div>
+									<div class="tg-hovercontent">
+										<div class="tg-description">
+											<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae, consectetur, veritatis. Architecto, autem cumque eaque in incidunt iure laudantium libero nam porro quae quasi ratione rerum temporibus velit vero, vitae?</p>
+										</div>
+										<strong class="tg-bookpage">Nhà xuất bản: Việt Nam</strong>
+										<div class="tg-ratingbox"><span class="tg-stars"><span></span></span></div>
+									</div>
+								</figure>
+								<div class="tg-postbookcontent">
+								<div class="tg-booktitle">
+										<h3><a href="">Đánh thức tâm trí</a></h3>
+									</div>
+									<span class="tg-bookwriter">Tác giả : <a href="javascript:void(0);">Đức Anh</a></span>
+								</div>
+							</div>
+						</div>
+					<?php
+					}
+					?>
+
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--************************************
+					Collection Count Start
+			*************************************-->
+	<section class="tg-parallax tg-bgcollectioncount tg-haslayout" data-z-index="-100" data-appear-top-offset="600" data-parallax="scroll" data-image-src="images/parallax/bgparallax-04.jpg">
+		<div class="tg-sectionspace tg-collectioncount tg-haslayout">
+			<div class="container">
+				<div class="row">
+					<div id="tg-collectioncounters" class="tg-collectioncounters">
+
+						<div class="tg-collectioncounter tg-drama">
+							<div class="tg-collectioncountericon">
+								<i class="fa fa-book"></i>
+							</div>
+							<div class="tg-titlepluscounter">
+								<h2>Sách - Tài liệu</h2>
+								<h3 data-from="0" data-to="50" data-speed="1000" data-refresh-interval="50"></h3>
+							</div>
+						</div>
+						<div class="tg-collectioncounter tg-horror">
+							<div class="tg-collectioncountericon">
+							<i class="fa fa-user"></i>
+							</div>
+							<div class="tg-titlepluscounter">
+								<h2>Tác giả</h2>
+								<h3 data-from="0" data-to="25" data-speed="1000" data-refresh-interval="50"></h3>
+							</div>
+						</div>
+						<div class="tg-collectioncounter tg-romance">
+							<div class="tg-collectioncountericon">
+							<i class="fa fa-list"></i>
+							</div>
+							<div class="tg-titlepluscounter">
+								<h2>Danh mục sách</h2>
+								<h3 data-from="0" data-to="10" data-speed="1000" data-refresh-interval="50"></h3>
+							</div>
+						</div>
+						<div class="tg-collectioncounter tg-fashion">
+							<div class="tg-collectioncountericon">
+							<i class="fa fa-user"></i>
+							</div>
+							<div class="tg-titlepluscounter">
+								<h2>Khách hàng</h2>
+								<h3 data-from="0" data-to="15" data-speed="1000" data-refresh-interval="50"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--************************************
+					Collection Count End
+			*************************************-->
+	<!--************************************
+					Testimonials Start
+			*************************************-->
+	<section class="tg-parallax tg-bgtestimonials tg-haslayout" data-z-index="-100" data-appear-top-offset="600" data-parallax="scroll" data-image-src="images/parallax/bgparallax-05.jpg">
+		<div class="tg-sectionspace tg-haslayout">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 col-lg-push-2">
+						<div id="tg-testimonialsslider" class="tg-testimonialsslider tg-testimonials owl-carousel">
+							<div class="item tg-testimonial">
+								<figure><img src="{% static 'users/images/Robertson_Davies.jpg' %}" alt="image description" style="opacity: .8; width: 80%;"></figure>
+								<blockquote><q>Một cuốn sách thực sự hay nên đọc trong tuổi trẻ, rồi đọc lại khi đã trưởng thành, và một nửa lúc tuổi già, giống như một tòa nhà đẹp nên được chiêm ngưỡng trong ánh bình minh, nắng trưa và ánh trăng.</q></blockquote>
+								<div class="tg-testimonialauthor">
+									<h3>Robertson Davies</h3>
+
+								</div>
+							</div>
+							<div class="item tg-testimonial">
+								<figure><img src="{% static 'users/images/Barack_Obama.jpg' %}" alt="image description" style="opacity: .8; width: 80%;"></figure>
+								<blockquote><q>Tổng thống Barack Obama từng nói "Việc đọc rất quan trọng. Nếu bạn biết cách đọc, cả thế giới sẽ mở ra cho bạn". Việc đọc và hình thành văn hóa đọc có ý nghĩa vô cùng quan trọng. Tất thảy những tinh túy, những kiến thức quý báu, vô giá đều đã được đúc kết trong chính những trang sách. Nếu bạn muốn khám phá thế giới, muốn mở mang tầm nhìn, muốn thành công thì đừng bỏ qua việc đọc sách..</q></blockquote>
+								<div class="tg-testimonialauthor">
+									<h3>Barack Obama</h3>
+									<span>Cựu Tổng thống Mỹ</span>
+								</div>
+							</div>
+							<div class="item tg-testimonial">
+								<figure><img src="{% static 'users/images/author/teacher.png ' %}" alt="image description"></figure>
+								<blockquote><q>Sách là kho báu vô tận, là đúc kết những tinh hoa, tri thức của cả nhân loại, là sự kết tinh của lớp lớp thế hệ. Sở hữu một cuốn sách hay chính là chìa khóa quyền năng để chúng ta có thể chinh phục được những khó khăn, thử thách phía trước nhằm vươn đến thành công.</q></blockquote>
+								<div class="tg-testimonialauthor">
+									<h3>Châm ngôn</h3>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--************************************
+					Testimonials End
+			*************************************-->
+
+
+
+	</div>
+	<!--************************************
+				Main End
+		*************************************-->
+	</div>
+{% endblock %}
