@@ -3,11 +3,10 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Customer(models.Model):
-    username = models.CharField(max_length=100, unique=True)
     password = models.CharField(max_length=100)
     fullname = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
-    email = models.CharField(max_length=50)
+    email = models.EmailField()
     address = models.CharField(max_length=200)
 
     def __str__(self):
@@ -63,6 +62,9 @@ class Book(models.Model):
 
     def __str__(self):
         return self.book_name
+
+    def get_products_by_id(cart_product_id):
+        return Book.objects.filter(id__in=cart_product_id)
 
 class Order(models.Model):
     class OrderStatus:

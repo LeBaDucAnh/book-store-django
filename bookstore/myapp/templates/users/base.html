@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +21,7 @@
 	<link rel="stylesheet" href="{% static 'users/css/responsive.css' %}">
 </head>
 <body>
+
     <header id="tg-header" class="tg-header tg-haslayout">
         <div class="tg-topbar">
             <div class="container">
@@ -34,14 +36,14 @@
                 <div class="tg-userlogin">
                     <div>
                         <li style="list-style:none ;" class="menu-item-has-children">
-                            <a href=""> <i id="user_icon" class="fa fa-user"></i>Xin chào</a>
+                            <a href=""> <i id="user_icon" class="fa fa-user"></i>Xin chào {{request.session.email}}</a>
                             <div class="mega-menu user">
                                 <ul class="tg-themetabnav " role="tablist">
                                     <li><a href="profile.php?infor">Trang cá nhân</a></li>
                                     <li><a href="profile.php?request">Yêu cầu mượn</a></li>
                                     <li><a href="profile.php?borrowed">Sách đang mượn</a></li>
                                     <li><a href="returned.php">Sách từng mượn</a></li>
-                                    <li><a class="tg-userlogout" href="logout.php">Đăng xuất</a></li>
+                                    <li><a class="tg-userlogout" href="{% url 'user-logout' %}">Đăng xuất</a></li>
                                 </ul>
                         </li>
                         <div>
@@ -82,7 +84,7 @@
                                             <span> <a href="themgiosach.php?xoatatca=1">Xóa tất cả</a> </span>
                                         </a>
                                         <div class="tg-btns">
-                                            <a class="tg-btn tg-active" href="giosach.php">Xem giỏ hàng</a>
+                                            <a class="tg-btn tg-active" href="{% url 'cart' %}">Xem giỏ hàng</a>
                                         </div>
                                     </div>
                                 </div>
@@ -120,6 +122,7 @@
                                                     </li>
                                                 {% endfor %}
                                             </ul>
+                                        </div>
                                     </li>
                                     <li>
                                         <a href="authors.php">Tác giả</a>
@@ -182,16 +185,11 @@
 									<h3>Danh mục</h3>
 								</div>
 								<div class="tg-widgetcontent">
+                                    {% for cat in categories %}
 									<ul>
-										<li><a href="https://www.haui.edu.vn/vn">Trường Đại học Công nghiệp Hà Nội</a></li>
-										<li><a href="https://tuyensinh.haui.edu.vn/">Cổng thông tin tuyển sinh</a></li>
-										<li><a href="https://egov.haui.edu.vn/core/Home/LogOn/?ReturnUrl=%2fcore"> Hành chính điện tử</a></li>
+                                        <li><a href="">{{cat.category_name}}</a></li>
 									</ul>
-									<ul>
-										<li><a href="https://lms.haui.edu.vn/">Đào tạo trực tuyến</a></li>
-										<li><a href="https://daotao.haui.edu.vn/">Cổng thông tin đào tạo</a></li>
-										<li><a href="contactus.php">Liên hệ với chúng tôi</a></li>
-									</ul>
+                                    {% endfor %}
 								</div>
 							</div>
 						</div>
@@ -243,6 +241,7 @@
 			</div>
 		</div>
 	</footer>
+
 	<!--************************************
 				Footer End
 		*************************************-->
@@ -260,3 +259,5 @@
 	<script src="{% static 'users/js/main.js' %}"></script>
 </body>
 </html>
+
+

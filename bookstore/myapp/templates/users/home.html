@@ -1,5 +1,6 @@
 {% extends "users/base.html" %}
 {% load static %}
+<!--{% load cart %}-->
 {% block title %}KingEdu{% endblock %}
 {% block content %}
 
@@ -33,12 +34,13 @@
 								{% for book in books %}
 								<div class="item">
 
-									<form action="" method="">
+									<form action="" method="post">
+										{% csrf_token %}
 										<div class="tg-postbook">
 											<figure class="tg-featureimg">
 												<div class="tg-bookimg">
-													<div class="tg-frontcover"><img src="../{{book.image}}" alt="image description" style="height: 200px;"></div>
-													<div class="tg-backcover"><img src="../{{book.image}}" alt="image description" style="height: 200px;"></div>
+													<div class="tg-frontcover"><img src="../media/{{book.image}}" alt="image description" style="height: 200px;"></div>
+													<div class="tg-backcover"><img src="../media/{{book.image}}" alt="image description" style="height: 200px;"></div>
 												</div>
 
 											</figure>
@@ -50,9 +52,9 @@
 													<h3><a href="">{{book.book_name}}</a></h3>
 												</div>
 												<span class="tg-bookwriter">Tác giả : <a href="javascript:void(0);">{{book.author}}</a></span>
-												<span class="tg-bookwriter">Tiền cọc :  {{book.unit_price}} VNĐ</span>
+												<span class="tg-bookwriter">Giá tiền :  {{book.unit_price}} VNĐ</span>
 												<span class="tg-stars"><span></span></span>
-
+												<input hidden type="text" value="{{book.id}}" name="product">
 												<a class="tg-btn tg-btnstyletwo" href="javascript:void(0);">
 													<button type="submit" class="themgiosach" name="themgiosach"><i class="fa fa-shopping-basket"></i>
 														<em>Thêm vào giỏ</em></button>

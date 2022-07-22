@@ -1,3 +1,4 @@
+from django.contrib.auth.handlers.modwsgi import check_password
 from django.shortcuts import render, redirect
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -21,6 +22,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
+import re
 # Create your views here.
 
 def index(request):
@@ -621,25 +623,26 @@ def delete_customer(request, id):
         pi.delete()
         return HttpResponseRedirect('/customer')
 
+
 def login(request):
     if request.method == "GET":
-        return render(request, 'store/login.html')
+        return render(request, 'users/login.html')
     else:
         email = request.POST.get('email')
         password = request.POST.get('password')
         customer = Customer.get_customer_by_email(email)
         error_msg = None
         if customer:
-            flag = check_password(password, customer.password)
-            if flag:
+            #flag = check_password(password, customer.password)
+            if password == customer.password:
                 request.session['customer_id'] = customer.id
                 request.session['email'] = customer.email
-                return redirect("home")
+                return redirect("index/users")
             else:
                 error_msg = "Email or Password is incorrect."
         else:
-            error_msg = "Email or Password is incorrect."
-        return render(request, 'store/login.html', {'error_msg': error_msg})
+            error_msg = "Email is incorrect."
+        return render(request, 'users/login.html', {'error_msg': error_msg})
 
 def homePage(request):
     books = Book.objects.all()
@@ -653,8 +656,97 @@ def basePgae(request):
     context = {'books': books, 'categories': categories}
     return render(request, 'users/base.html', context)
 
-def add_to_cart(request):
+# def add_to_cart(request):
+#     return render(request, 'users/home.html', {'contact_list': contact_list})
 
 
+def signup(request):
+    if request.method == 'GET':
+        return render(request, 'users/signup.html')
+    else:
+        fullname = request.POST.get('fullname')
+        phone = request.POST.get('phone')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        customer = Customer(fullname=fullname, phone=phone, email=email, password=password)
 
-    return render(request, 'users/home.html', {'contact_list': contact_list})
+        values = {
+            'fullname': fullname,
+            'phone': phone,
+            'email': email,
+        }
+
+        err_msg = None
+        reg = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{6,20}$"
+        pas = re.compile(reg)
+        mat = re.search(pas, password)
+        if not fullname:
+            err_msg = "Full Name Required."
+        elif len(fullname) < 5:
+            err_msg = "Full Name must be 5 characters long."
+        elif not phone:
+            err_msg = "Phone is Required."
+        elif len(phone) < 10:
+            err_msg = "Phone Number must be 10 characters long."
+        elif not email:
+            err_msg = "Email is Required."
+        elif not password:
+            err_msg = "Password is Required"
+        elif not mat:
+            err_msg = "Password is invalid"
+        elif customer.does_exits():
+            err_msg = "User with this email address already registered."
+        if not err_msg:
+            customer.save()
+            return redirect('index/users')
+        else:
+            return render(request, 'users/signup.html', {'error_msg': err_msg, 'values': values})
+
+@login_required(login_url="user-login")
+def logout(request):
+    request.session.clear()
+    return redirect('user-login')
+
+def cart(request):
+    cart_product_id = list(request.session.get('cart').keys())
+    cart_product = Book.get_products_by_id(cart_product_id)
+    print(cart_product)
+    return render(request, 'users/cart.html')
+
+
+def homePage(request):
+    if request.method == 'POST':
+        product = request.POST.get('product')
+        remove = request.POST.get('remove')
+        cart = request.session.get('cart')
+        if cart:
+            quantity = cart.get(product)
+            if quantity:
+                if remove:
+                    if quantity <= 1:
+                        cart.pop(product)
+                    else:
+                        cart[product] = quantity - 1
+                else:
+                    cart[product] = quantity + 1
+            else:
+                cart[product] = 1
+        else:
+            cart = {}
+            cart[product] = 1
+
+        request.session['cart'] = cart
+        print(request.session['cart'])
+        return redirect('index/users')
+
+    else:
+        products = None
+        categories = Category.objects.all()
+        category_id = request.GET.get('category')
+        if category_id:
+            products = Book.objects.filter(category=category_id)
+        else:
+            products = Book.objects.filter(category=1)
+        context = {'products': products, 'categories': categories}
+        print("Your Email Address is: ", request.session.get('email'))
+        return render(request, 'users/home.html', context)
